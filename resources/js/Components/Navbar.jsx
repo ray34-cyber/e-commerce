@@ -1,11 +1,21 @@
 import React, { useState } from "react";
+import { Link } from "@inertiajs/react";
 
 const Navbar = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [showCategories, setShowCategories] = useState(false);
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
         // Lakukan operasi pencarian sesuai kebutuhan Anda
+    };
+
+    const handleMouseEnter = () => {
+        setShowCategories(true);
+    };
+
+    const handleMouseLeave = () => {
+        setShowCategories(false);
     };
 
     return (
@@ -13,12 +23,20 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center flex-grow">
-                        <span className="text-white mr-8">Logo</span>
+                        <Link href="/" className="text-white mr-4">
+                            Logo
+                        </Link>
+                        <Link
+                            href="/categories"
+                            className="text-white mr-4 cursor-pointer"
+                        >
+                            Kategori
+                        </Link>
                         <div className="w-full relative">
                             <input
                                 type="search"
-                                className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none w-full"
-                                placeholder="Cari..."
+                                className="bg-white h-10 pr-10 rounded-full text-sm focus:outline-none w-full"
+                                placeholder="Cari Produk ..."
                                 value={searchTerm}
                                 onChange={handleSearch}
                             />
@@ -37,12 +55,18 @@ const Navbar = () => {
                         </div>
                     </div>
                     <div>
-                        <button className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md">
+                        <Link
+                            href="/register"
+                            className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                        >
                             Register
-                        </button>
-                        <button className="ml-2 px-4 py-2 bg-gray-700 text-white rounded-md">
+                        </Link>
+                        <Link
+                            href="/login"
+                            className="ml-2 px-4 py-2 bg-gray-700 text-white rounded-md"
+                        >
                             Login
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
