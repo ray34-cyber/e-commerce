@@ -11,32 +11,34 @@ const Card = () => {
         setIsHovered(false);
     };
 
-    const cardClasses = `bg-white rounded-lg shadow-lg p-4 ${
+    const cardClasses = `card w-96 bg-base-100 shadow-xl rounded-lg p-4 ${
         isHovered
             ? "transform hover:scale-105 transition-transform duration-300"
             : ""
     }`;
 
-    // Data dummy untuk card
-    const title = "Card Title";
-    const description =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-    const image = "https://dummyimage.com/200x200/ccc/000";
-
     return (
-        <div className="card-wrapper">
-            <div
-                className={cardClasses}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
+        <div
+            className={cardClasses}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <figure>
                 <img
-                    className="w-32 h-32 mx-auto mb-4 rounded-full"
-                    src={image}
-                    alt="Card"
+                    src="https://source.unsplash.com/300x200?shoes"
+                    alt="Shoes"
                 />
-                <h3 className="text-lg font-semibold">{title}</h3>
-                <p className="text-gray-600">{description}</p>
+            </figure>
+            <div className="card-body">
+                <h2 className="card-title">
+                    Shoes!
+                    <div className="badge badge-secondary">NEW</div>
+                </h2>
+                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <div className="card-actions justify-end">
+                    <div className="badge badge-outline">Fashion</div>
+                    <div className="badge badge-outline">Products</div>
+                </div>
             </div>
         </div>
     );
