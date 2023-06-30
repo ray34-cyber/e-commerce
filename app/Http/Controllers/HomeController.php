@@ -10,8 +10,12 @@ use Inertia\Controller;
 class HomeController extends Controller
 {
     public function index() {
+
         return Inertia::render('home/index', [
-            'products' => Product::all()
+            'products' => Product::latest()->with('category')->get()
         ]);
+        
     }
+
+    
 }

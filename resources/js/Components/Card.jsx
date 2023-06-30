@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-const Card = () => {
+const Card = ({
+    product: {
+        nama_produk,
+        price,
+        body,
+        category: { name },
+    },
+}) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = () => {
@@ -25,19 +32,16 @@ const Card = () => {
         >
             <figure>
                 <img
-                    src="https://source.unsplash.com/300x200?shoes"
+                    src={`https://source.unsplash.com/300x200?${nama_produk}`}
                     alt="Shoes"
                 />
             </figure>
             <div className="card-body">
-                <h2 className="card-title">
-                    Shoes!
-                    <div className="badge badge-secondary">NEW</div>
-                </h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h2 className="card-title">{nama_produk}!</h2>
+                <p>{body}</p>
+                <p>{price} $</p>
                 <div className="card-actions justify-end">
-                    <div className="badge badge-outline">Fashion</div>
-                    <div className="badge badge-outline">Products</div>
+                    <div className="badge badge-outline">{name}</div>
                 </div>
             </div>
         </div>

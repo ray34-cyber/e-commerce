@@ -18,23 +18,41 @@ class ProductFactory extends Factory
     {
         $faker = Faker::create();
 
+        $nama_produk_dan_category_id = $this->generateProductNameAndCategoryId($faker);
+
+        $nama_produk = $nama_produk_dan_category_id[0];
+        $category_id = $nama_produk_dan_category_id[1];
+
         return [
-            'nama_produk' => $this->generateProductName($faker),
+            'nama_produk' => $nama_produk,
             'slug' => $this->faker->slug(),
             'price' => $this->faker->randomNumber(3,false),
-            'body' => implode("\n\n", $this->faker->paragraphs(rand(2, 3))),
-            'category_id' => 1
+            'body' => $this->faker->sentence(rand(5, 8)),
+            'category_id' => $category_id
         ];
     }
 
-    private function generateProductName($faker)
+    private function generateProductNameAndCategoryId($faker)
     {
-        $categories = ['Sepatu', 'Baju', 'Celana'];
-        
-
-        $category = $faker->randomElement($categories);
-        
-
-        return "$category";
+        $categories = [
+            'Shoes' => ['Running Shoes', 'Sneakers', 'Boots'],
+            'Clothes' => ['T-Shirts', 'Dresses', 'Jeans'],
+            'Pants' => ['Trousers', 'Leggings', 'Shorts']
+        ];
+    
+        $category = $faker->randomElement(array_keys($categories));
+        $types = $categories[$category];
+        $nama_produk = $faker->randomElement($types);
+    
+        $categoriesMapping = [
+            'Clothes' => 1,
+            'Shoes' => 2,
+            'Pants' => 3
+        ];
+    
+        $category_id = $categoriesMapping[$category] ?? null;
+    
+        return [$nama_produk, $category_id];
     }
+
 }

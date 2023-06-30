@@ -6,7 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-
+use App\Models\Category;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,15 +22,20 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // Category::create([
-        //     'name' => 'Baju',
-        //     'slug' => 'baju'
-        // ]);
+        Category::create([
+            'name' => 'Clothes',
+            'slug' => 'clothes'
+        ]);
 
-        // Category::create([
-        //     'name' => 'Sepatu',
-        //     'slug' => 'sepatu'
-        // ]);
+        Category::create([
+            'name' => 'Shoes',
+            'slug' => 'shoes'
+        ]);
+
+        Category::create([
+            'name' => 'Pants',
+            'slug' => 'pants'
+        ]);
 
         Product::factory(20)->create();
 
