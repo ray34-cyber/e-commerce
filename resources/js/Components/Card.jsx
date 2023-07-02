@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import React, { useState } from "react";
 
 const Card = ({
@@ -5,7 +6,7 @@ const Card = ({
         nama_produk,
         price,
         body,
-        category: { name },
+        category: { name_category, slug },
     },
 }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -24,6 +25,7 @@ const Card = ({
             : ""
     }`;
 
+    console.log(props);
     return (
         <div
             className={cardClasses}
@@ -41,7 +43,12 @@ const Card = ({
                 <p>{body}</p>
                 <p>{price} $</p>
                 <div className="card-actions justify-end">
-                    <div className="badge badge-outline">{name}</div>
+                    <Link
+                        className="badge badge-outline"
+                        href={`/?category=${slug}`}
+                    >
+                        {name_category}
+                    </Link>
                 </div>
             </div>
         </div>

@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+import { Link } from "@inertiajs/react";
 
 const Navbar = () => {
     const [searchValue, setSearchValue] = useState("");
+    const [categoryValue, setCategoryValue] = useState("");
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const searchParam = urlParams.get("search");
+        const categoryParam = urlParams.get("category");
         setSearchValue(searchParam || "");
+        setCategoryValue(categoryParam || "");
     }, []);
 
     const handleInputChange = (event) => {
@@ -15,10 +19,23 @@ const Navbar = () => {
 
     return (
         <div className="navbar bg-emerald-300 container mx-auto justify-between rounded-xl">
-            <div className="flex-shrink-0">
-                <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-            </div>
+            <Link
+                className="btn btn-ghost normal-case text-xl flex-shrink-0"
+                href="/"
+            >
+                daisyUI
+            </Link>
+
             <form action="/" method="get" className="flex-1 flex items-center">
+                {categoryValue && (
+                    <input
+                        type="hidden"
+                        name="category"
+                        value={categoryValue}
+                        hidden
+                    />
+                )}
+
                 <div className="flex-1 mr-2">
                     <input
                         type="text"

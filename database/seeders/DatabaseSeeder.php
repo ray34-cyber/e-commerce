@@ -23,17 +23,17 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Category::create([
-            'name' => 'Clothes',
+            'name_category' => 'Clothes',
             'slug' => 'clothes'
         ]);
 
         Category::create([
-            'name' => 'Shoes',
+            'name_category' => 'Shoes',
             'slug' => 'shoes'
         ]);
 
         Category::create([
-            'name' => 'Pants',
+            'name_category' => 'Pants',
             'slug' => 'pants'
         ]);
 
