@@ -1,18 +1,17 @@
 import Card from "@/Components/Card";
 import Navbar from "@/Components/Navbar";
-import { Head } from "@inertiajs/react";
+import Paginator from "@/Components/Paginator";
+import { Head, Link } from "@inertiajs/react";
 import React from "react";
 import Typewriter from "typewriter-effect";
 
-const index = (props) => {
-    const handleGoBack = () => {
-        window.history.back();
-    };
-
+const Index = (props) => {
     return (
         <>
             <Head title="Home" />
-            {props.products.length > 0 && <Navbar />}
+            {props.products.data.length > 0 && (
+                <Navbar categories={props.categories} />
+            )}
             <div className="container mx-auto mt-8">
                 <Typewriter
                     options={{
@@ -33,21 +32,24 @@ const index = (props) => {
                 />
             </div>
             <div className="container mt-6 mx-auto grid grid-cols-auto justify-items-center lg:grid-cols-3 gap-3 justify-center">
-                {props.products.length ? (
-                    props.products.map((product) => {
-                        return <Card key={product.id} product={product} />;
-                    })
+                {props.products.data ? (
+                    props.products.data.map((product) => (
+                        <Card key={product.id} product={product} />
+                    ))
                 ) : (
                     <div className="text-center">
                         <p>Tidak ada Produk</p>
-                        <button className="btn btn-info" onClick={handleGoBack}>
+                        <Link href="/" className="btn btn-info">
                             Kembali
-                        </button>
+                        </Link>
                     </div>
                 )}
+            </div>
+            <div className="container mx-auto flex justify-center mt-14 mb-20">
+                <Paginator products={props.products} />
             </div>
         </>
     );
 };
 
-export default index;
+export default Index;

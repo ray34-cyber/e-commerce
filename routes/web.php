@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,9 +19,7 @@ use Inertia\Inertia;
 */
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/register', function() {
-    return Inertia::render('register/index');
-});
+Route::get('/register', [RegisterController::class, 'index']);
 
 Route::get('/login',function() {
     return Inertia::render('login/index');

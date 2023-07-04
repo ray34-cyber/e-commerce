@@ -25,7 +25,7 @@ const Card = ({
             : ""
     }`;
 
-    console.log(props);
+    
     return (
         <div
             className={cardClasses}

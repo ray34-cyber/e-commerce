@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@inertiajs/react";
 
-const Navbar = () => {
+const Navbar = ({ categories }) => {
     const [searchValue, setSearchValue] = useState("");
     const [categoryValue, setCategoryValue] = useState("");
 
@@ -17,14 +17,38 @@ const Navbar = () => {
         setSearchValue(event.target.value);
     };
 
+    console.log(categories);
+
     return (
         <div className="navbar bg-emerald-300 container mx-auto justify-between rounded-xl">
             <Link
-                className="btn btn-ghost normal-case text-xl flex-shrink-0"
+                className="btn btn-primary normal-case text-xl flex-shrink-0"
                 href="/"
             >
-                daisyUI
+                <img
+                    src="./assets/img/nicese-logos.jpeg"
+                    className="w-[2.5vw]"
+                />
             </Link>
+            <div className="dropdown dropdown-right">
+                <label tabIndex={0} className="btn m-1">
+                    Kategori
+                </label>
+                <ul
+                    tabIndex={0}
+                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                    {categories.map((category) => {
+                        return (
+                            <li>
+                                <Link href={`?category=${category.slug}`}>
+                                    {category.name_category}
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
 
             <form action="/" method="get" className="flex-1 flex items-center">
                 {categoryValue && (
