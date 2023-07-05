@@ -13,7 +13,7 @@ class HomeController extends Controller
     public function index() {
 
         return Inertia::render('home/index', [
-            'products' => Product::latest()->filter(request(['search','category']))->paginate(6),
+            'products' => Product::latest()->filter(request(['search','category']))->paginate(6)->withQueryString(),
             'categories' => Category::all()
         ]);
         

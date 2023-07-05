@@ -10,34 +10,37 @@ const Index = (props) => {
         <>
             <Head title="Home" />
             {props.products.data.length > 0 && (
-                <Navbar categories={props.categories} />
+                <>
+                    <Navbar categories={props.categories} />
+                    <div className="container mx-auto mt-8">
+                        <Typewriter
+                            options={{
+                                strings: [
+                                    "Ingin berjualan?",
+                                    "Daftarkan produk anda dengan cara mendaftar akun terlebih dahulu!",
+                                ],
+                                wrapperClassName:
+                                    "font-bold text-5xl text-center block bg-gradient-to-r from-violet-700 to-teal-400 bg-clip-text text-transparent mb-4",
+                                loop: true,
+                                autoStart: true,
+                                cursor: "",
+                                pauseFor: 1000,
+                            }}
+                            onInit={(typewriter) => {
+                                typewriter.start();
+                            }}
+                        />
+                    </div>
+                </>
             )}
-            <div className="container mx-auto mt-8">
-                <Typewriter
-                    options={{
-                        strings: [
-                            "Ingin berjualan?",
-                            "Daftarkan produk anda dengan cara mendaftar akun terlebih dahulu!",
-                        ],
-                        wrapperClassName:
-                            "font-bold text-5xl text-center block bg-gradient-to-r from-violet-700 to-teal-400 bg-clip-text text-transparent mb-4",
-                        loop: true,
-                        autoStart: true,
-                        cursor: "",
-                        pauseFor: 1000,
-                    }}
-                    onInit={(typewriter) => {
-                        typewriter.start();
-                    }}
-                />
-            </div>
-            <div className="container mt-6 mx-auto grid grid-cols-auto justify-items-center lg:grid-cols-3 gap-3 justify-center">
-                {props.products.data ? (
+
+            <div className="container mt-6 mx-auto grid grid-cols-auto justify-items-center lg:grid-cols-3 gap-3">
+                {props.products.data.length > 0 ? (
                     props.products.data.map((product) => (
                         <Card key={product.id} product={product} />
                     ))
                 ) : (
-                    <div className="text-center">
+                    <div className="text-center col-start-1 col-end-4">
                         <p>Tidak ada Produk</p>
                         <Link href="/" className="btn btn-info">
                             Kembali
@@ -45,9 +48,11 @@ const Index = (props) => {
                     </div>
                 )}
             </div>
-            <div className="container mx-auto flex justify-center mt-14 mb-20">
-                <Paginator products={props.products} />
-            </div>
+            {props.products.data.length > 0 ? (
+                <div className="container mx-auto flex justify-center mt-14 mb-20">
+                    <Paginator products={props.products} />
+                </div>
+            ) : null}
         </>
     );
 };

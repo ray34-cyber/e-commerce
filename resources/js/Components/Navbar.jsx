@@ -17,8 +17,6 @@ const Navbar = ({ categories }) => {
         setSearchValue(event.target.value);
     };
 
-    console.log(categories);
-
     return (
         <div className="navbar bg-emerald-300 container mx-auto justify-between rounded-xl">
             <Link
@@ -40,7 +38,7 @@ const Navbar = ({ categories }) => {
                 >
                     {categories.map((category) => {
                         return (
-                            <li>
+                            <li key={category.id}>
                                 <Link href={`?category=${category.slug}`}>
                                     {category.name_category}
                                 </Link>

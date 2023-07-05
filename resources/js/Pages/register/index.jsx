@@ -1,7 +1,26 @@
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import React from "react";
 
 const index = () => {
+    const { data, setData, post } = useForm({
+        full_name: "",
+        username: "",
+        email: "",
+        password: "",
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post("/register", {
+            onSuccess: () => {
+                // Handle success, if needed
+            },
+            onError: () => {
+                // Handle error, if needed
+            },
+        });
+    };
+
     return (
         <>
             <Head title="Register" />
@@ -21,7 +40,7 @@ const index = () => {
                     <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
                 </div>
                 <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
-                    <form className="bg-white">
+                    <form className="bg-white" onSubmit={handleSubmit}>
                         <p className="text-3xl font-normal text-gray-600 mb-7">
                             Welcome
                         </p>
@@ -41,9 +60,13 @@ const index = () => {
                             <input
                                 className="pl-2 outline-none border-none"
                                 type="text"
-                                name=""
+                                name="full_name"
                                 id=""
+                                value={data.full_name}
                                 placeholder="Full name"
+                                onChange={(e) =>
+                                    setData("full_name", e.target.value)
+                                }
                             />
                         </div>
                         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -64,9 +87,13 @@ const index = () => {
                             <input
                                 className="pl-2 outline-none border-none"
                                 type="text"
-                                name=""
+                                name="username"
                                 id=""
+                                value={data.username}
                                 placeholder="Username"
+                                onChange={(e) =>
+                                    setData("username", e.target.value)
+                                }
                             />
                         </div>
                         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -87,9 +114,12 @@ const index = () => {
                             <input
                                 className="pl-2 outline-none border-none"
                                 type="text"
-                                name=""
+                                name="email"
                                 id=""
                                 placeholder="Email Address"
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
                             />
                         </div>
                         <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
@@ -108,9 +138,12 @@ const index = () => {
                             <input
                                 className="pl-2 outline-none border-none"
                                 type="text"
-                                name=""
+                                name="password"
                                 id=""
                                 placeholder="Password"
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
                             />
                         </div>
                         <button
