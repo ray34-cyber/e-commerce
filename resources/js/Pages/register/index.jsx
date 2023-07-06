@@ -1,24 +1,26 @@
 import { Head, useForm } from "@inertiajs/react";
+import axios from "axios";
 import React from "react";
 
 const index = () => {
-    const { data, setData, post } = useForm({
+    const { data, setData } = useForm({
         full_name: "",
         username: "",
         email: "",
         password: "",
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        post("/register", {
-            onSuccess: () => {
-                // Handle success, if needed
-            },
-            onError: () => {
-                // Handle error, if needed
-            },
-        });
+
+        axios
+            .post("/register", data)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -137,7 +139,7 @@ const index = () => {
                             </svg>
                             <input
                                 className="pl-2 outline-none border-none"
-                                type="text"
+                                type="password"
                                 name="password"
                                 id=""
                                 placeholder="Password"
