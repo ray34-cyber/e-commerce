@@ -1,25 +1,28 @@
 import { Head, useForm } from "@inertiajs/react";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 
-const index = () => {
-    const { data, setData } = useForm({
+const index = (props) => {
+    const { data, setData, errors } = useForm({
         full_name: "",
         username: "",
         email: "",
         password: "",
     });
+    const [errorMessage, setErrorMessage] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         axios
             .post("/register", data)
-            .then((response) => {
-                console.log(response);
+            .then(() => {
+                window.location.href = "/login";
             })
-            .catch((error) => {
-                console.log(error);
+            .catch((errors) => {
+                if (errors?.response?.data?.message) {
+                    setErrorMessage(errors?.response?.data?.errors);
+                    console.log(errorMessage);
+                }
             });
     };
 
@@ -27,7 +30,7 @@ const index = () => {
         <>
             <Head title="Register" />
             <div className="h-screen md:flex">
-                <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
+                <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-teal-500 to-purple-700 i justify-around items-center hidden">
                     <div>
                         <h1 className="text-white font-bold text-4xl font-sans">
                             GoShopping
@@ -60,10 +63,13 @@ const index = () => {
                                 />
                             </svg>
                             <input
-                                className="pl-2 outline-none border-none"
+                                className={`pl-2 outline-none border-none ${
+                                    errorMessage
+                                        ? "invalid:border-red-500 border-2"
+                                        : null
+                                }`}
                                 type="text"
                                 name="full_name"
-                                id=""
                                 value={data.full_name}
                                 placeholder="Full name"
                                 onChange={(e) =>
@@ -90,7 +96,6 @@ const index = () => {
                                 className="pl-2 outline-none border-none"
                                 type="text"
                                 name="username"
-                                id=""
                                 value={data.username}
                                 placeholder="Username"
                                 onChange={(e) =>
@@ -117,7 +122,6 @@ const index = () => {
                                 className="pl-2 outline-none border-none"
                                 type="text"
                                 name="email"
-                                id=""
                                 placeholder="Email Address"
                                 onChange={(e) =>
                                     setData("email", e.target.value)
@@ -141,7 +145,6 @@ const index = () => {
                                 className="pl-2 outline-none border-none"
                                 type="password"
                                 name="password"
-                                id=""
                                 placeholder="Password"
                                 onChange={(e) =>
                                     setData("password", e.target.value)

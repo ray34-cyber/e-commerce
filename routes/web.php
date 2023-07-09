@@ -6,6 +6,7 @@ use App\Http\Controllers\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,7 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'store']);
-Route::get('/csrf-token', function () {
-    return response()->json(['csrfToken' => csrf_token()]);
-});
+
 
 Route::get('/login',function() {
     return Inertia::render('login/index');
@@ -32,3 +31,4 @@ Route::get('/login',function() {
 Route::get('/categories', function() {
     return Inertia::render('category/index');
 });
+
