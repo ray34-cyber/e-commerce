@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Foundation\Application;
@@ -24,11 +25,8 @@ Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'store']);
 
 
-Route::get('/login',function() {
-    return Inertia::render('login/index');
-});
+Route::get('/login',[LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'authenticate']);
 
-Route::get('/categories', function() {
-    return Inertia::render('category/index');
-});
+
 

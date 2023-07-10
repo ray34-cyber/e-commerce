@@ -2,8 +2,8 @@ import { Head, useForm } from "@inertiajs/react";
 import axios from "axios";
 import React, { useState } from "react";
 
-const index = (props) => {
-    const { data, setData, errors } = useForm({
+const index = () => {
+    const { data, setData } = useForm({
         full_name: "",
         username: "",
         email: "",
@@ -11,7 +11,7 @@ const index = (props) => {
     });
     const [errorMessage, setErrorMessage] = useState({});
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         axios
             .post("/register", data)
@@ -19,10 +19,7 @@ const index = (props) => {
                 window.location.href = "/login";
             })
             .catch((errors) => {
-                if (errors?.response?.data?.message) {
-                    setErrorMessage(errors?.response?.data?.errors);
-                    console.log(errorMessage);
-                }
+                setErrorMessage(errors.response.data.errors);
             });
     };
 
@@ -49,7 +46,7 @@ const index = (props) => {
                         <p className="text-3xl font-normal text-gray-600 mb-7">
                             Welcome
                         </p>
-                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-0">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-5 w-5 text-gray-400"
@@ -63,11 +60,7 @@ const index = (props) => {
                                 />
                             </svg>
                             <input
-                                className={`pl-2 outline-none border-none ${
-                                    errorMessage
-                                        ? "invalid:border-red-500 border-2"
-                                        : null
-                                }`}
+                                className="pl-2 grow outline-none border-none"
                                 type="text"
                                 name="full_name"
                                 value={data.full_name}
@@ -77,7 +70,13 @@ const index = (props) => {
                                 }
                             />
                         </div>
-                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+                        {errorMessage.full_name &&
+                            errorMessage.full_name[0] && (
+                                <p className="text-red-500">
+                                    {errorMessage.full_name[0]}
+                                </p>
+                            )}
+                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-2">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-5 w-5 text-gray-400"
@@ -103,7 +102,12 @@ const index = (props) => {
                                 }
                             />
                         </div>
-                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+                        {errorMessage.username && errorMessage.username[0] && (
+                            <p className="text-red-500">
+                                {errorMessage.username[0]}
+                            </p>
+                        )}
+                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-2">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-5 w-5 text-gray-400"
@@ -128,7 +132,12 @@ const index = (props) => {
                                 }
                             />
                         </div>
-                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
+                        {errorMessage.email && errorMessage.email[0] && (
+                            <p className="text-red-500">
+                                {errorMessage.email[0]}
+                            </p>
+                        )}
+                        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-2">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-5 w-5 text-gray-400"
@@ -151,6 +160,11 @@ const index = (props) => {
                                 }
                             />
                         </div>
+                        {errorMessage.password && errorMessage.password[0] && (
+                            <p className="text-red-500">
+                                {errorMessage.password[0]}
+                            </p>
+                        )}
                         <button
                             type="submit"
                             className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use Inertia\Response;
+use Illuminate\Support\Facades\Session;
+
 
 class RegisterController extends Controller
 {
@@ -24,8 +24,8 @@ class RegisterController extends Controller
             'password' => 'required|min:5|max:255'
         ]);
 
-        User::create($validatedData);   
+        User::create($validatedData);
+
+        Session::flash('success', 'Registrasi berhasil! silahkan login!');
     }
 }
-
-
