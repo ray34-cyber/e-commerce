@@ -1,6 +1,7 @@
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, Link } from "@inertiajs/react";
 import axios from "axios";
 import React, { useState } from "react";
+import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 const index = () => {
     const { data, setData } = useForm({
@@ -13,6 +14,7 @@ const index = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         axios
             .post("/register", data)
             .then(() => {
@@ -32,9 +34,19 @@ const index = () => {
                         <h1 className="text-white font-bold text-4xl font-sans">
                             GoShopping
                         </h1>
-                        <p className="text-white mt-1 text-2xl">
+                        <p className="text-white mt-1 text-2xl mb-6">
                             The most popular e-commerce
                         </p>
+                        <Link
+                            href="/"
+                            className="flex flex-col items-center text-2xl text-emerald-400"
+                        >
+                            <BsFillArrowLeftSquareFill
+                                size={40}
+                                className="mb-3 text-current text-cyan-400 animate-animateArrowLeft"
+                            />
+                            Kembali berbelanja
+                        </Link>
                     </div>
                     <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
                     <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
@@ -70,8 +82,8 @@ const index = () => {
                                 }
                             />
                         </div>
-                        {errorMessage.full_name &&
-                            errorMessage.full_name[0] && (
+                        {errorMessage?.full_name &&
+                            errorMessage?.full_name[0] && (
                                 <p className="text-red-500">
                                     {errorMessage.full_name[0]}
                                 </p>
@@ -102,11 +114,12 @@ const index = () => {
                                 }
                             />
                         </div>
-                        {errorMessage.username && errorMessage.username[0] && (
-                            <p className="text-red-500">
-                                {errorMessage.username[0]}
-                            </p>
-                        )}
+                        {errorMessage?.username &&
+                            errorMessage?.username[0] && (
+                                <p className="text-red-500">
+                                    {errorMessage.username[0]}
+                                </p>
+                            )}
                         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-2">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +145,7 @@ const index = () => {
                                 }
                             />
                         </div>
-                        {errorMessage.email && errorMessage.email[0] && (
+                        {errorMessage?.email && errorMessage?.email[0] && (
                             <p className="text-red-500">
                                 {errorMessage.email[0]}
                             </p>
@@ -160,11 +173,12 @@ const index = () => {
                                 }
                             />
                         </div>
-                        {errorMessage.password && errorMessage.password[0] && (
-                            <p className="text-red-500">
-                                {errorMessage.password[0]}
-                            </p>
-                        )}
+                        {errorMessage?.password &&
+                            errorMessage?.password[0] && (
+                                <p className="text-red-500">
+                                    {errorMessage.password[0]}
+                                </p>
+                            )}
                         <button
                             type="submit"
                             className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"

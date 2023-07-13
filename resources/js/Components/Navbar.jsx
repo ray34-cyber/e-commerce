@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import axios from "axios";
 
 const Navbar = ({ categories }) => {
     const [searchValue, setSearchValue] = useState("");
     const [categoryValue, setCategoryValue] = useState("");
+    const props = usePage().props;
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -17,6 +19,15 @@ const Navbar = ({ categories }) => {
         setSearchValue(event.target.value);
     };
 
+    const handleLogout = (e) => {
+        e.preventDefault();
+
+        axios.post("/logout").then(() => {
+            window.location.href = "/";
+        });
+        console.log(props);
+    };
+
     return (
         <div className="navbar bg-emerald-300 container mx-auto justify-between rounded-xl">
             <Link
@@ -28,7 +39,7 @@ const Navbar = ({ categories }) => {
                     className="w-[2.5vw]"
                 />
             </Link>
-            <div className="dropdown dropdown-right">
+            <div className="dropdown dropdown-bottom">
                 <label tabIndex={0} className="btn m-1">
                     Kategori
                 </label>
@@ -63,12 +74,12 @@ const Navbar = ({ categories }) => {
                         type="text"
                         name="search"
                         placeholder="Search"
-                        className="p-2 rounded-l-lg rounded-r-lg w-full"
+                        className="p-2 rounded-lg w-full"
                         value={searchValue}
                         onChange={handleInputChange}
                     />
                 </div>
-                <button className="btn btn-primary btn-square">
+                <button className="btn btn-primary btn-square rounded-r-lg mr-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6"
@@ -85,30 +96,48 @@ const Navbar = ({ categories }) => {
                     </svg>
                 </button>
             </form>
-            <div className="dropdown dropdown-end">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                    <div className="w-10 rounded-full">
-                        <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                    </div>
-                </label>
-                <ul
-                    tabIndex={0}
-                    className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-                >
-                    <li>
-                        <a className="justify-between">
-                            Profile
-                            <span className="badge">New</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a>Settings</a>
-                    </li>
-                    <li>
-                        <a>Logout</a>
-                    </li>
-                </ul>
-            </div>
+            {props.auth?.user ? (
+                <div className="dropdown dropdown-end">
+                    <label
+                        tabIndex={0}
+                        className="btn btn-ghost btn-circle avatar"
+                    >
+                        <div className="w-10 rounded-full">
+                            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                        </div>
+                    </label>
+                    <ul
+                        tabIndex={0}
+                        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                    >
+                        <li>
+                            <Link
+                                href="/dashboard"
+                                className="justify-center text-center"
+                            >
+                                My dashboard
+                            </Link>
+                        </li>
+                        <hr />
+                        <li className="pt-2">
+                            <form onSubmit={handleLogout} className="flex">
+                                <button type="submit" className="flex-grow">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            ) : (
+                <div className="flex items-center space-x-2">
+                    <Link href="/login" className="btn btn-base">
+                        Login
+                    </Link>
+                    <Link href="/register" className="btn btn-base">
+                        Register
+                    </Link>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,11 +1,41 @@
-import { Link, Head } from "@inertiajs/react";
-import React from "react";
+import { Link, Head, useForm, usePage } from "@inertiajs/react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 const index = ({ flash }) => {
+    const [showMessageRegistration, setShowMessageRegistration] =
+        useState(true);
+    const [showMessageLogin, setShowMessageLogin] = useState(true);
+    const { setData, post, errors } = useForm({
+        username: "",
+        password: "",
+    });
+
+    useEffect(() => {
+        if (flash.registrationSuccess) {
+            setTimeout(() => {
+                setShowMessageRegistration(false);
+            }, 3900);
+        } else if (flash.loginFailed) {
+            setTimeout(() => {
+                setShowMessageLogin(false);
+            }, 3900);
+        }
+    }, [flash.loginFailed]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post("/login");
+    };
+
     return (
         <>
-            {flash.message ? (
-                <div className="alert container mx-auto alert-success absolute z-10 top-0 left-0 right-0">
+            {showMessageRegistration && flash.registrationSuccess && (
+                <div
+                    className="alert container mx-auto mt-0 lg:mt-10 alert-success absolute z-10 top-0 left-0 right-0
+                     animate-fadeOut"
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="stroke-current shrink-0 h-6 w-6"
@@ -19,10 +49,33 @@ const index = ({ flash }) => {
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                     </svg>
-                    <span>{flash.message}</span>
+                    <span className="text-white text-xl">
+                        {flash.registrationSuccess}
+                    </span>
                 </div>
-            ) : (
-                ""
+            )}
+            {showMessageLogin && flash.loginFailed && (
+                <div
+                    className="alert container mx-auto mt-0 lg:mt-10 alert-error absolute z-10 top-0 left-0 right-0
+                     animate-fadeOut"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="stroke-current shrink-0 h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
+                    <span className="text-white text-xl">
+                        {flash.loginFailed}
+                    </span>
+                </div>
             )}
             <Head title="Login" />
             <div className="h-screen md:flex">
@@ -31,9 +84,19 @@ const index = ({ flash }) => {
                         <h1 className="text-white font-bold text-4xl font-sans">
                             GoShopping
                         </h1>
-                        <p className="text-white mt-1 text-2xl">
+                        <p className="text-white mt-1 text-3xl mb-6">
                             The most popular e-commerce
                         </p>
+                        <Link
+                            href="/"
+                            className="flex flex-col items-center text-2xl text-emerald-400"
+                        >
+                            <BsFillArrowLeftSquareFill
+                                size={40}
+                                className="mb-3 text-current text-cyan-400 animate-animateArrowLeft"
+                            />
+                            Kembali berbelanja
+                        </Link>
                     </div>
                     <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
                     <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
@@ -41,7 +104,7 @@ const index = ({ flash }) => {
                     <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
                 </div>
                 <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
-                    <form className="bg-white">
+                    <form className="bg-white" onSubmit={handleSubmit}>
                         <p className="text-3xl font-normal text-gray-600 mb-7">
                             Please Login
                         </p>
@@ -66,10 +129,14 @@ const index = ({ flash }) => {
                                 type="text"
                                 name="username"
                                 placeholder="Username"
-                                required
+                                onChange={(e) =>
+                                    setData("username", e.target.value)
+                                }
                             />
                         </div>
-
+                        {errors?.username && (
+                            <p className="text-red-500">{errors.username}</p>
+                        )}
                         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-2">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -88,10 +155,14 @@ const index = ({ flash }) => {
                                 type="password"
                                 name="password"
                                 placeholder="Password"
-                                required
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
                             />
                         </div>
-
+                        {errors?.password && (
+                            <p className="text-red-500">{errors.password}</p>
+                        )}
                         <button
                             type="submit"
                             className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"

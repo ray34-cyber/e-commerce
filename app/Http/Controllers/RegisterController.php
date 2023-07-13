@@ -26,6 +26,6 @@ class RegisterController extends Controller
 
         User::create($validatedData);
 
-        Session::flash('success', 'Registrasi berhasil! silahkan login!');
+        Session::flash('registrationSuccess', 'Registrasi berhasil! silahkan login!');
     }
 }

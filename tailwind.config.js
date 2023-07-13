@@ -15,8 +15,28 @@ export default {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
+            keyframes: {
+                fadeOut: {
+                    "0%": { opacity: "1" },
+                    "100%": { opacity: "0" },
+                },
+                animateArrowLeft: {
+                    "0%, 100%": {
+                        transform: "translateX(0%)",
+                        animation_timing_function: "cubic-bezier(0.8, 0, 1, 1)",
+                    },
+                    "50%": {
+                        transform: "translatex(-35%)",
+                        animation_timing_function: "cubic-bezier(0, 0, 0.2, 1)",
+                    },
+                },
+            },
+            animation: {
+                fadeOut: "fadeOut 4s ease-in",
+                animateArrowLeft: "animateArrowLeft 1s infinite",
+            },
         },
     },
 
-    plugins: [forms,require("daisyui")],
+    plugins: [forms, require("daisyui")],
 };
