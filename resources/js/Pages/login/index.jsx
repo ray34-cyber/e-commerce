@@ -1,5 +1,4 @@
-import { Link, Head, useForm, usePage } from "@inertiajs/react";
-import axios from "axios";
+import { Link, Head, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
@@ -13,20 +12,19 @@ const index = ({ flash }) => {
     });
 
     useEffect(() => {
-        if (flash.registrationSuccess) {
-            setTimeout(() => {
-                setShowMessageRegistration(false);
-            }, 3900);
-        } else if (flash.loginFailed) {
-            setTimeout(() => {
-                setShowMessageLogin(false);
-            }, 3900);
-        }
-    }, [flash.loginFailed]);
+        setTimeout(() => {
+            setShowMessageRegistration(false);
+        }, 2900);
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowMessageLogin(true);
         post("/login");
+
+        setTimeout(() => {
+            setShowMessageLogin(false);
+        }, 2900);
     };
 
     return (

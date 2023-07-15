@@ -25,7 +25,6 @@ const Navbar = ({ categories }) => {
         axios.post("/logout").then(() => {
             window.location.href = "/";
         });
-        console.log(props);
     };
 
     return (

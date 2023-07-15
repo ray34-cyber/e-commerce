@@ -28,7 +28,8 @@ class ProductFactory extends Factory
             'slug' => $this->faker->slug(),
             'price' => $this->faker->randomNumber(3,false),
             'body' => $this->faker->sentence(rand(5, 8)),
-            'category_id' => $category_id
+            'category_id' => $category_id,
+            'user_id' => mt_rand(1,3),
         ];
     }
 
