@@ -17,7 +17,7 @@ const index = () => {
 
         axios
             .post("/register", data)
-            .then(() => {
+            .then(() => {  
                 window.location.href = "/login";
             })
             .catch((errors) => {

@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+
+
 
 class DashboardProductController extends Controller
 {
@@ -23,7 +27,9 @@ class DashboardProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('dashboard/products/Create', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -39,7 +45,7 @@ class DashboardProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        
     }
 
     /**
@@ -64,5 +70,11 @@ class DashboardProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Product::class, 'slug', $request->nama_produk);
+        return response()->json(['slug' => $slug]);
     }
 }

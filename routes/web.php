@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -30,8 +31,7 @@ Route::get('/login',[LoginController::class, 'index'])->name('login')->middlewar
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('logout', [LoginController::class, 'logout']);
 
-Route::get('/dashboard',function() {
-  return Inertia::render('dashboard/index');
-})->middleware('auth');
+Route::get('/dashboard',[DashboardController::class, 'index'])->middleware('auth');
 
-Route::resource('/dashboard/products', DashboardProductController::class);
+Route::get('/dashboard/products/checkSlug',[DashboardProductController::class, 'checkSlug'])->middleware('auth');
+Route::resource('/dashboard/products', DashboardProductController::class)->middleware('auth');
