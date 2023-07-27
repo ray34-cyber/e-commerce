@@ -37,7 +37,18 @@ class DashboardProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nama_produk' => 'required|max:255',
+            'slug' => 'required|unique:products',
+            'category_id' => 'required',
+            'body' => 'required',
+            'price' => 'required|integer'
+        ]);
+
+        $validatedData['user_id'] = auth()->user()->id;
+
+        Product::create($validatedData);
+
     }
 
     /**

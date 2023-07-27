@@ -2,11 +2,11 @@ import { Link, Head, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
-const index = ({ flash }) => {
+const index = (props) => {
     const [showMessageRegistration, setShowMessageRegistration] =
         useState(true);
-    const [showMessageLogin, setShowMessageLogin] = useState(true);
-    const { setData, post, errors } = useForm({
+    const [showMessageLogin, setShowMessageLogin] = useState(false);
+    const { setData, post, errors, reset } = useForm({
         username: "",
         password: "",
     });
@@ -19,17 +19,21 @@ const index = ({ flash }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setShowMessageLogin(true);
-        post("/login");
 
-        setTimeout(() => {
-            setShowMessageLogin(false);
-        }, 2900);
+        post("/login", {
+            onSuccess: () => {
+                setShowMessageLogin(true);
+                setTimeout(() => {
+                    setShowMessageLogin(false);
+                }, 2900);
+            },
+        });
     };
 
     return (
         <>
-            {showMessageRegistration && flash.registrationSuccess && (
+            <Head title="Login" />
+            {showMessageRegistration && props.flash.registrationSuccess && (
                 <div
                     className="alert container mx-auto mt-0 lg:mt-10 alert-success absolute z-10 top-0 left-0 right-0
                      animate-fadeOut"
@@ -48,11 +52,11 @@ const index = ({ flash }) => {
                         />
                     </svg>
                     <span className="text-white text-xl">
-                        {flash.registrationSuccess}
+                        {props.flash.registrationSuccess}
                     </span>
                 </div>
             )}
-            {showMessageLogin && flash.loginFailed && (
+            {showMessageLogin && props.flash.loginFailed && (
                 <div
                     className="alert container mx-auto mt-0 lg:mt-10 alert-error absolute z-10 top-0 left-0 right-0
                      animate-fadeOut"
@@ -71,11 +75,10 @@ const index = ({ flash }) => {
                         />
                     </svg>
                     <span className="text-white text-xl">
-                        {flash.loginFailed}
+                        {props.flash.loginFailed}
                     </span>
                 </div>
             )}
-            <Head title="Login" />
             <div className="h-screen md:flex">
                 <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-teal-500 to-purple-700 i justify-around items-center hidden">
                     <div>
