@@ -18,7 +18,7 @@ class DashboardProductController extends Controller
     public function index()
     {
         return Inertia::render('dashboard/products/index', [
-            'products' => Product::where('user_id', auth()->user()->id)->get()
+            'products' => Product::where('user_id', auth()->user()->id)->latest()->get()
         ]);
     }
 
@@ -64,7 +64,10 @@ class DashboardProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('dashboard/products/Edit', [
+            'product' => $product,
+            'category' => Category::all()
+        ]);
     }
 
     /**
@@ -79,8 +82,8 @@ class DashboardProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
-    {
-        //
+    {   
+        Product::destroy($product->id);
     }
 
     public function checkSlug(Request $request)

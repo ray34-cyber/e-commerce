@@ -18,7 +18,7 @@ export default {
             keyframes: {
                 fadeOut: {
                     "0%": { opacity: "1" },
-                    "100%": { opacity: "0" },
+                    "100%": { opacity: "0", display: "hidden" },
                 },
                 animateArrowLeft: {
                     "0%, 100%": {

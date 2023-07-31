@@ -5,8 +5,8 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 const index = (props) => {
     const [showMessageRegistration, setShowMessageRegistration] =
         useState(true);
-    const [showMessageLogin, setShowMessageLogin] = useState(false);
-    const { setData, post, errors, reset } = useForm({
+    // const [showMessageLogin, setShowMessageLogin] = useState(false);
+    const { setData, post, errors } = useForm({
         username: "",
         password: "",
     });
@@ -20,16 +20,8 @@ const index = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        post("/login", {
-            onSuccess: () => {
-                setShowMessageLogin(true);
-                setTimeout(() => {
-                    setShowMessageLogin(false);
-                }, 2900);
-            },
-        });
+        post("/login");
     };
-
     return (
         <>
             <Head title="Login" />
@@ -56,10 +48,17 @@ const index = (props) => {
                     </span>
                 </div>
             )}
-            {showMessageLogin && props.flash.loginFailed && (
+            {props.flash.loginFailed && (
                 <div
                     className="alert container mx-auto mt-0 lg:mt-10 alert-error absolute z-10 top-0 left-0 right-0
                      animate-fadeOut"
+                    id="loginMessage"
+                    onAnimationEnd={() => {
+                        const loginMessage =
+                            document.getElementById("loginMessage");
+                        loginMessage.classList.add("hidden");
+                        delete props.flash.loginFailed;
+                    }}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +169,6 @@ const index = (props) => {
                         >
                             Login
                         </button>
-
                         <div className="flex justify-center mt-4">
                             <small className="text-lg">
                                 Belum daftar?{" "}
