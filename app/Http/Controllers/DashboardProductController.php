@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Str;
 
 
 
@@ -66,7 +67,7 @@ class DashboardProductController extends Controller
     {
         return Inertia::render('dashboard/products/Edit', [
             'product' => $product,
-            'category' => Category::all()
+            'categories' => Category::all()
         ]);
     }
 
@@ -75,7 +76,23 @@ class DashboardProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $rules = [
+            'nama_produk' => 'required|max:255',
+            'category_id' => 'required',
+            'body' => 'required',
+            'price' => 'required|integer'
+        ];
+
+        if($request->slug != $product->slug) {
+            $rules['slug'] = 'required|unique:products';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        $validatedData['user_id'] = auth()->user()->id;
+
+        Product::where('id', $product->id)
+                    ->update($validatedData);
     }
 
     /**
@@ -88,7 +105,12 @@ class DashboardProductController extends Controller
 
     public function checkSlug(Request $request)
     {
-        $slug = SlugService::createSlug(Product::class, 'slug', $request->nama_produk);
+        
+        $namaProduk = $request->nama_produk;
+        $namaProduk = Str::replace(' ', '-', $namaProduk);
+    
+        $slug = SlugService::createSlug(Product::class, 'slug', $namaProduk);
+    
         return response()->json(['slug' => $slug]);
     }
 }

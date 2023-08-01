@@ -1,33 +1,31 @@
 import React, { useState } from "react";
 import Main from "../layouts";
 import axios from "axios";
-import { useForm } from "@inertiajs/react";
 
 const Create = (props) => {
-    // const { data, setData } = useForm({
-    //     nama_produk: "",
-    //     slug: "",
-    //     category_id: "",
-    //     body: "",
-    //     price: 0,
-    // });
-    // const [slug, setSlug] = useState("");
-    const [nama_produk, setNamaProduk] = useState("");
-    const [slug, setSlug] = useState("");
-    const [category_id, setCategoryId] = useState(1);
-    const [body, setBody] = useState("");
-    const [price, setPrice] = useState(0);
+    const [data, setData] = useState({
+        nama_produk: "",
+        slug: "",
+        category_id: 1,
+        body: "",
+        price: 0,
+    });
+
+    const handleNamaProdukChange = (e) => {
+        const namaProduk = e.target.value;
+        setData((prevData) => ({ ...prevData, nama_produk: namaProduk }));
+        axios
+            .get(`/dashboard/products/checkSlug?nama_produk=${namaProduk}`)
+            .then(() => {
+                setData((prevData) => ({ ...prevData, slug: namaProduk }));
+            })
+            .catch((error) => console.log(error));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .post("/dashboard/products", {
-                nama_produk,
-                slug,
-                category_id,
-                body,
-                price,
-            })
+            .post("/dashboard/products", data)
             .then(() => {
                 window.location.href = "/dashboard/products";
             })
@@ -56,17 +54,7 @@ const Create = (props) => {
                             type="text"
                             placeholder="Nama Produk"
                             name="nama_produk"
-                            onChange={(e) =>
-                                axios
-                                    .get(
-                                        "/dashboard/products/checkSlug?nama_produk=" +
-                                            e.target.value
-                                    )
-                                    .then(() => {
-                                        setNamaProduk(e.target.value);
-                                        setSlug(e.target.value);
-                                    })
-                            }
+                            onChange={(e) => handleNamaProdukChange(e)}
                         />
                     </div>
                     <div className="mb-6">
@@ -82,9 +70,13 @@ const Create = (props) => {
                             type="text"
                             name="slug"
                             placeholder="Slug"
-                            value={slug}
-                            readOnly
-                            disabled
+                            value={data.slug}
+                            onChange={(e) =>
+                                setData((prevData) => ({
+                                    ...prevData,
+                                    slug: e.target.value,
+                                }))
+                            }
                         />
                     </div>
                     <div className="mb-6">
@@ -97,8 +89,13 @@ const Create = (props) => {
                         <select
                             className="select select-success w-full max-w-xs"
                             name="category_id"
-                            value={category_id}
-                            onChange={(e) => setCategoryId(e.target.value)}
+                            value={data.category_id}
+                            onChange={(e) =>
+                                setData((prevData) => ({
+                                    ...prevData,
+                                    category_id: e.target.value,
+                                }))
+                            }
                         >
                             {props.categories.map((category) => (
                                 <option key={category.id} value={category.id}>
@@ -121,8 +118,12 @@ const Create = (props) => {
                             rows="5"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 input-success leading-tight focus:outline-none focus:shadow-outline"
                             placeholder="Description your product"
-                            value={body}
-                            onChange={(e) => setBody(e.target.value)}
+                            onChange={(e) =>
+                                setData((prevData) => ({
+                                    ...prevData,
+                                    body: e.target.value,
+                                }))
+                            }
                         ></textarea>
                     </div>
                     <div className="mb-6">
@@ -138,7 +139,12 @@ const Create = (props) => {
                             type="number"
                             name="price"
                             placeholder="Price Product"
-                            onChange={(e) => setPrice(e.target.value)}
+                            onChange={(e) =>
+                                setData((prevData) => ({
+                                    ...prevData,
+                                    price: e.target.value,
+                                }))
+                            }
                         />
                     </div>
                     <div className="flex items-center justify-between">
