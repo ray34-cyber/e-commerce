@@ -21,6 +21,10 @@ const index = (props) => {
         e.preventDefault();
 
         post("/login");
+
+        if (props.flash.loginFailed) {
+            document.getElementById("loginMessage").classList.remove("hidden");
+        }
     };
     return (
         <>
