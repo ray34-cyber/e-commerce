@@ -7,9 +7,8 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
-use Illuminate\Support\Str;
-
-
+use Illuminate\Support\Facades\Storage;
+use Spatie\Backtrace\File;
 
 class DashboardProductController extends Controller
 {
@@ -42,9 +41,14 @@ class DashboardProductController extends Controller
             'nama_produk' => 'required|max:255',
             'slug' => 'required|unique:products',
             'category_id' => 'required',
+            'image' => 'image|file|max:1024',
             'body' => 'required',
             'price' => 'required|integer'
         ]);
+
+        if($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('product-images');
+        }
 
         $validatedData['user_id'] = auth()->user()->id;
 
@@ -79,37 +83,46 @@ class DashboardProductController extends Controller
         $rules = [
             'nama_produk' => 'required|max:255',
             'category_id' => 'required',
+            'image' => 'image|file|max:255',
             'body' => 'required',
-            'price' => 'required|integer'
+            'price' => 'required|integer',
+            
         ];
 
-        if($request->slug != $product->slug) {
+        if ($request->slug != $product->slug) {
             $rules['slug'] = 'required|unique:products';
         }
 
         $validatedData = $request->validate($rules);
 
+        if ($request->file('image')) {
+                if($request->oldImage) {
+                    Storage::delete($request->oldImage);
+                }
+                $validatedData['image'] = $request->file('image')->store('product-images');
+        }
+
         $validatedData['user_id'] = auth()->user()->id;
 
         Product::where('id', $product->id)
-                    ->update($validatedData);
+                ->update($validatedData);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
-    {   
+    {   if($product->image) {
+        Storage::delete($product->image);
+        }
+
         Product::destroy($product->id);
     }
 
     public function checkSlug(Request $request)
     {
-        
-        $namaProduk = $request->nama_produk;
-        $namaProduk = Str::replace(' ', '-', $namaProduk);
     
-        $slug = SlugService::createSlug(Product::class, 'slug', $namaProduk);
+        $slug = SlugService::createSlug(Product::class, 'slug', $request->nama_produk);
     
         return response()->json(['slug' => $slug]);
     }

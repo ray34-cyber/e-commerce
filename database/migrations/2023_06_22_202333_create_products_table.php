@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('nama_produk');
             $table->string('slug')->unique();
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('price');
             $table->text('body');
             $table->timestamp('published_at')->nullable();

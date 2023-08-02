@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Main from "../layouts";
 import axios from "axios";
 
@@ -10,6 +10,9 @@ const Create = (props) => {
         body: "",
         price: 0,
     });
+    const [errorMessage, setErrorMessage] = useState({});
+    const img = useRef();
+    const imgPreview = useRef();
 
     const handleNamaProdukChange = (e) => {
         const namaProduk = e.target.value;
@@ -19,17 +22,37 @@ const Create = (props) => {
             .then(() => {
                 setData((prevData) => ({ ...prevData, slug: namaProduk }));
             })
-            .catch((error) => console.log(error));
+            .catch((errors) => console.log(errors));
+    };
+
+    const previewImage = (e) => {
+        img.current.style.display = "block";
+
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(img.current.files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            imgPreview.current.src = oFREvent.target.result;
+        };
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("nama_produk", data.nama_produk);
+        formData.append("slug", data.slug);
+        formData.append("category_id", data.category_id);
+        formData.append("body", data.body);
+        formData.append("price", data.price);
+        formData.append("image", img.current.files[0]);
+
         axios
-            .post("/dashboard/products", data)
+            .post("/dashboard/products", formData)
             .then(() => {
                 window.location.href = "/dashboard/products";
             })
-            .catch((error) => console.log(error));
+            .catch((errors) => setErrorMessage(errors.response.data.errors));
     };
     return (
         <div className="container mx-auto flex flex-col md:px-72 mt-10">
@@ -40,6 +63,7 @@ const Create = (props) => {
                 <form
                     className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
                     onSubmit={handleSubmit}
+                    encType="multipart/form-data"
                 >
                     <div className="mb-4">
                         <label
@@ -104,6 +128,29 @@ const Create = (props) => {
                             ))}
                         </select>
                     </div>
+                    <div className="mb-3">
+                        <label
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                            htmlFor="image"
+                        >
+                            Product Image
+                        </label>
+                        <img
+                            ref={imgPreview}
+                            className="max-w-xs block mb-3 rounded-lg shadow-xl"
+                        />
+                        <input
+                            id="image"
+                            type="file"
+                            className="file-input file-input-bordered file-input-success w-full max-w-xs"
+                            name="image"
+                            ref={img}
+                            onChange={(e) => previewImage(e)}
+                        />
+                    </div>
+                    {errorMessage?.image && errorMessage?.image[0] && (
+                        <p className="text-red-500">{errorMessage.image[0]}</p>
+                    )}
                     <div className="mb-3">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"

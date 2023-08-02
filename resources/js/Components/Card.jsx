@@ -7,6 +7,7 @@ const Card = ({
         price,
         body,
         category: { name_category, slug },
+        image,
     },
 }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +26,6 @@ const Card = ({
             : ""
     }`;
 
-    
     return (
         <div
             className={cardClasses}
@@ -33,10 +33,14 @@ const Card = ({
             onMouseLeave={handleMouseLeave}
         >
             <figure>
-                <img
-                    src={`https://source.unsplash.com/300x200?${nama_produk}`}
-                    alt="Shoes"
-                />
+                {image ? (
+                    <img src={`storage/${image}`} alt="Shoes" />
+                ) : (
+                    <img
+                        src={`https://source.unsplash.com/300x200?${nama_produk}`}
+                        alt="Shoes"
+                    />
+                )}
             </figure>
             <div className="card-body">
                 <h2 className="card-title">{nama_produk}!</h2>
