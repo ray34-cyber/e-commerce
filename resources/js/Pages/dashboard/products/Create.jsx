@@ -10,12 +10,10 @@ const Create = (props) => {
         body: "",
         price: 0,
     });
-<<<<<<< HEAD
+
     const [errorMessage, setErrorMessage] = useState({});
     const img = useRef();
     const imgPreview = useRef();
-=======
->>>>>>> 2f0e18952181db31f2a25789f2d5eac2b9bf54c5
 
     const handleNamaProdukChange = (e) => {
         const namaProduk = e.target.value;
@@ -25,7 +23,7 @@ const Create = (props) => {
             .then(() => {
                 setData((prevData) => ({ ...prevData, slug: namaProduk }));
             })
-<<<<<<< HEAD
+
             .catch((errors) => console.log(errors));
     };
 
@@ -38,9 +36,6 @@ const Create = (props) => {
         oFReader.onload = function (oFREvent) {
             imgPreview.current.src = oFREvent.target.result;
         };
-=======
-            .catch((error) => console.log(error));
->>>>>>> 2f0e18952181db31f2a25789f2d5eac2b9bf54c5
     };
 
     const handleSubmit = (e) => {
@@ -55,16 +50,13 @@ const Create = (props) => {
         formData.append("image", img.current.files[0]);
 
         axios
-<<<<<<< HEAD
             .post("/dashboard/products", formData)
-=======
-            .post("/dashboard/products", data)
->>>>>>> 2f0e18952181db31f2a25789f2d5eac2b9bf54c5
             .then(() => {
                 window.location.href = "/dashboard/products";
             })
             .catch((errors) => setErrorMessage(errors.response.data.errors));
     };
+
     return (
         <div className="container mx-auto flex flex-col md:px-72 mt-10">
             <h1 className="text-center flex-auto text-4xl font-bold">
