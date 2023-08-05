@@ -10,7 +10,6 @@ const Create = (props) => {
         body: "",
         price: 0,
     });
-
     const [errorMessage, setErrorMessage] = useState({});
     const img = useRef();
     const imgPreview = useRef();

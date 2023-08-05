@@ -9,7 +9,6 @@ const Edit = (props) => {
         category_id: props?.product?.category_id || 1,
         body: props?.product?.body || "",
         price: props?.product?.price || 0,
-        image: props?.product?.image || "",
     });
     const [errorMessage, setErrorMessage] = useState({});
     const img = useRef(null);
@@ -46,11 +45,10 @@ const Edit = (props) => {
                 ...data,
                 image: img.current.files[0],
             })
-            .then((response) => {
-                console.log(response);
+            .then(() => {
                 window.location.href = "/dashboard/products";
             })
-            .catch((errors) => setErrorMessage(errors.response.data.errors));
+            .catch((errors) => console.log(errors));
     };
 
     return (
@@ -135,10 +133,10 @@ const Edit = (props) => {
                         >
                             Product Image
                         </label>
-                        {data.image ? (
+                        {props?.product?.image ? (
                             <img
                                 className="max-w-xs block mb-3 rounded-lg shadow-xl"
-                                src={`/storage/${data.image}`}
+                                src={`/storage/${props?.product?.image}`}
                                 ref={imgPreview}
                             />
                         ) : (
