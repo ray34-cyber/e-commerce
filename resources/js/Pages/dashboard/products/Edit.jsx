@@ -14,15 +14,12 @@ const Edit = (props) => {
     const img = useRef(null);
     const imgPreview = useRef(null);
 
-    const handleNamaProdukChange = (e) => {
+    const handleNamaProdukChange = async (e) => {
         const namaProduk = e.target.value;
         setData((prevData) => ({ ...prevData, nama_produk: namaProduk }));
-        axios
+       await axios
             .get(`/dashboard/products/checkSlug?nama_produk=${namaProduk}`)
-            .then(() => {
-                setData((prevData) => ({ ...prevData, slug: namaProduk }));
-            })
-
+            .then((response) => setData((prevData) => ({...prevData, slug: response.data.slug})))
             .catch((errors) => console.log(errors));
     };
 
@@ -40,15 +37,22 @@ const Edit = (props) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
+        const formData = new FormData();
+        formData.append("nama_produk", data.nama_produk);
+        formData.append("slug", data.slug);
+        formData.append("category_id", data.category_id);
+        formData.append("body", data.body);
+        formData.append("price", data.price);
+        formData.append("image", img.current.files[0]);
+        formData.append("oldImage", props?.product?.image);
+        formData.append("_method", "PATCH")
+
         await axios
-            .patch(`/dashboard/products/${props?.product?.slug}`, {
-                ...data,
-                image: img.current.files[0],
-            })
+            .post(`/dashboard/products/${props?.product?.slug}`, formData)
             .then(() => {
                 window.location.href = "/dashboard/products";
             })
-            .catch((errors) => console.log(errors));
+            .catch((errors) => setErrorMessage(errors.response.data.errors));
     };
 
     return (
@@ -79,6 +83,9 @@ const Edit = (props) => {
                             onChange={(e) => handleNamaProdukChange(e)}
                         />
                     </div>
+                    {errorMessage?.nama_produk && errorMessage?.nama_produk[0] && (
+                        <p className="text-red-500">{errorMessage.nama_produk[0]}</p>
+                    )}
                     <div className="mb-6">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -101,6 +108,9 @@ const Edit = (props) => {
                             }
                         />
                     </div>
+                    {errorMessage?.slug && errorMessage?.slug[0] && (
+                        <p className="text-red-500">{errorMessage.slug[0]}</p>
+                    )}
                     <div className="mb-6">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -126,6 +136,9 @@ const Edit = (props) => {
                             ))}
                         </select>
                     </div>
+                    {errorMessage?.category_id && errorMessage?.category_id[0] && (
+                        <p className="text-red-500">{errorMessage.category_id[0]}</p>
+                    )}
                     <div className="mb-3">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -145,7 +158,7 @@ const Edit = (props) => {
                                 className="max-w-xs block mb-3 rounded-lg shadow-xl"
                             />
                         )}
-
+                        <input type="hidden" name="oldImage"/>
                         <input
                             id="image"
                             type="file"
@@ -181,9 +194,12 @@ const Edit = (props) => {
                             }
                         ></textarea>
                     </div>
-                    <div className="mb-6">
+                    {errorMessage?.body && errorMessage?.body[0] && (
+                        <p className="text-red-500">{errorMessage.body[0]}</p>
+                    )}
+                    <div className="mb-2">
                         <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
+                            className="block text-gray-700 text-sm font-bold"
                             htmlFor="price"
                         >
                             Price
@@ -203,6 +219,9 @@ const Edit = (props) => {
                             }
                         />
                     </div>
+                    {errorMessage?.price && errorMessage?.price[0] && (
+                        <p className="text-red-500 mb-3">{errorMessage.price[0]}</p>
+                    )}
                     <div className="flex items-center justify-between">
                         <button
                             className="btn btn-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

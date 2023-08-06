@@ -45,7 +45,7 @@ class DashboardProductController extends Controller
             'category_id' => 'required',
             'image' => 'image|file|max:1024',
             'body' => 'required',
-            'price' => 'required|integer'
+            'price' => 'required|numeric|gt:0'
         ]);
 
         if($request->file('image')) {
@@ -86,25 +86,22 @@ class DashboardProductController extends Controller
             'nama_produk' => 'required|max:255',
             'category_id' => 'required',
             'body' => 'required',
-            'price' => 'required|integer',
+            'price' => 'required|numeric|gt:0',
             'image' => 'image|file|max:1024'
         ];
     
         if ($request->slug != $product->slug) {
             $rules['slug'] = 'required|unique:products';
         }
-
-        if ($request->file('image')) {
-            if ($request->oldImage) {
-                Storage::delete($request->oldImage);
-            }
-            $validatedData['image'] = $request->file('image')->store('product-images');
-        }
-    
         
        $validatedData = $request->validate($rules);
     
-    
+       if ($request->file('image')) {
+        if ($request->oldImage) {
+            Storage::delete($request->oldImage);
+        }
+        $validatedData['image'] = $request->file('image')->store('product-images');
+    }
         
     
         $validatedData['user_id'] = auth()->user()->id;
@@ -126,11 +123,8 @@ class DashboardProductController extends Controller
 
     public function checkSlug(Request $request)
     {
-
-    
         $slug = SlugService::createSlug(Product::class, 'slug', $request->nama_produk);
 
-    
         return response()->json(['slug' => $slug]);
     }
 }

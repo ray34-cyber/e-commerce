@@ -14,15 +14,12 @@ const Create = (props) => {
     const img = useRef();
     const imgPreview = useRef();
 
-    const handleNamaProdukChange = (e) => {
+    const handleNamaProdukChange = async (e) => {
         const namaProduk = e.target.value;
         setData((prevData) => ({ ...prevData, nama_produk: namaProduk }));
-        axios
+       await axios
             .get(`/dashboard/products/checkSlug?nama_produk=${namaProduk}`)
-            .then(() => {
-                setData((prevData) => ({ ...prevData, slug: namaProduk }));
-            })
-
+            .then((response) => setData((prevData) => ({...prevData, slug: response.data.slug})))
             .catch((errors) => console.log(errors));
     };
 
@@ -83,6 +80,9 @@ const Create = (props) => {
                             onChange={(e) => handleNamaProdukChange(e)}
                         />
                     </div>
+                    {errorMessage?.nama_produk && errorMessage?.nama_produk[0] && (
+                        <p className="text-red-500">{errorMessage.nama_produk[0]}</p>
+                    )}
                     <div className="mb-6">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -105,6 +105,9 @@ const Create = (props) => {
                             }
                         />
                     </div>
+                    {errorMessage?.slug && errorMessage?.slug[0] && (
+                        <p className="text-red-500">{errorMessage.slug[0]}</p>
+                    )}
                     <div className="mb-6">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -130,6 +133,9 @@ const Create = (props) => {
                             ))}
                         </select>
                     </div>
+                    {errorMessage?.category_id && errorMessage?.category_id[0] && (
+                        <p className="text-red-500">{errorMessage.category_id[0]}</p>
+                    )}
                     <div className="mb-3">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -175,6 +181,9 @@ const Create = (props) => {
                             }
                         ></textarea>
                     </div>
+                    {errorMessage?.body && errorMessage?.body[0] && (
+                        <p className="text-red-500">{errorMessage.body[0]}</p>
+                    )}
                     <div className="mb-6">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -196,6 +205,9 @@ const Create = (props) => {
                             }
                         />
                     </div>
+                    {errorMessage?.price && errorMessage?.price[0] && (
+                        <p className="text-red-500">{errorMessage.price[0]}</p>
+                    )}
                     <div className="flex items-center justify-between">
                         <button
                             className="btn btn-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
