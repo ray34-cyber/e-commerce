@@ -26,6 +26,7 @@ const Navbar = ({ categories }) => {
             window.location.href = "/";
         });
     };
+    console.log(props);
 
     return (
         <div className="navbar bg-emerald-300 container mx-auto justify-between rounded-xl">
@@ -49,7 +50,9 @@ const Navbar = ({ categories }) => {
                     {categories.map((category) => {
                         return (
                             <li key={category.id}>
-                                <Link href={`?category=${category.slug}`}>
+                                <Link
+                                    href={`?category=${category.category_slug}`}
+                                >
                                     {category.name_category}
                                 </Link>
                             </li>
@@ -102,7 +105,13 @@ const Navbar = ({ categories }) => {
                         className="btn btn-ghost btn-circle avatar"
                     >
                         <div className="w-10 rounded-full">
-                            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                            <img
+                                src={
+                                    props.auth.user.avatar
+                                        ? `${props.auth.user.avatar}`
+                                        : `https://via.placeholder.com/176x265?text=No+image`
+                                }
+                            />
                         </div>
                     </label>
                     <ul

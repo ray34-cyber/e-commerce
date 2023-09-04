@@ -17,9 +17,14 @@ const Create = (props) => {
     const handleNamaProdukChange = async (e) => {
         const namaProduk = e.target.value;
         setData((prevData) => ({ ...prevData, nama_produk: namaProduk }));
-       await axios
+        await axios
             .get(`/dashboard/products/checkSlug?nama_produk=${namaProduk}`)
-            .then((response) => setData((prevData) => ({...prevData, slug: response.data.slug})))
+            .then((response) =>
+                setData((prevData) => ({
+                    ...prevData,
+                    slug: response.data.slug,
+                }))
+            )
             .catch((errors) => console.log(errors));
     };
 
@@ -72,7 +77,7 @@ const Create = (props) => {
                             Nama Produk
                         </label>
                         <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none input-success focus:shadow-outline"
                             id="nama_produk"
                             type="text"
                             placeholder="Nama Produk"
@@ -80,9 +85,12 @@ const Create = (props) => {
                             onChange={(e) => handleNamaProdukChange(e)}
                         />
                     </div>
-                    {errorMessage?.nama_produk && errorMessage?.nama_produk[0] && (
-                        <p className="text-red-500">{errorMessage.nama_produk[0]}</p>
-                    )}
+                    {errorMessage?.nama_produk &&
+                        errorMessage?.nama_produk[0] && (
+                            <p className="text-red-500">
+                                {errorMessage.nama_produk[0]}
+                            </p>
+                        )}
                     <div className="mb-6">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -133,9 +141,12 @@ const Create = (props) => {
                             ))}
                         </select>
                     </div>
-                    {errorMessage?.category_id && errorMessage?.category_id[0] && (
-                        <p className="text-red-500">{errorMessage.category_id[0]}</p>
-                    )}
+                    {errorMessage?.category_id &&
+                        errorMessage?.category_id[0] && (
+                            <p className="text-red-500">
+                                {errorMessage.category_id[0]}
+                            </p>
+                        )}
                     <div className="mb-3">
                         <label
                             className="block text-gray-700 text-sm font-bold mb-2"

@@ -17,7 +17,7 @@ const index = () => {
 
         axios
             .post("/register", data)
-            .then(() => {  
+            .then(() => {
                 window.location.href = "/login";
             })
             .catch((errors) => {
@@ -53,7 +53,7 @@ const index = () => {
                     <div className="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
                     <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
                 </div>
-                <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
+                <div className="flex md:w-1/2 flex-col justify-center py-10 gap-2 items-center bg-white">
                     <form className="bg-white" onSubmit={handleSubmit}>
                         <p className="text-3xl font-normal text-gray-600 mb-7">
                             Welcome
@@ -186,6 +186,12 @@ const index = () => {
                             Register
                         </button>
                     </form>
+                    <small className="text-lg">
+                        Sudah punya akun?{" "}
+                        <Link className="text-blue-600" href="/login">
+                            Silahkan login
+                        </Link>
+                    </small>
                 </div>
             </div>
         </>

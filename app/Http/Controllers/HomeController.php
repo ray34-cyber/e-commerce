@@ -16,8 +16,5 @@ class HomeController extends Controller
             'products' => Product::latest()->filter(request(['search','category']))->paginate(6)->withQueryString(),
             'categories' => Category::all()
         ]);
-        
     }
-
-    
 }

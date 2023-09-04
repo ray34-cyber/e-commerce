@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nama_produk');
             $table->string('slug')->unique();
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('price');
+            $table->unsignedBigInteger('price'); 
             $table->text('body');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

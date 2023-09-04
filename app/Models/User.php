@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Product;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -43,4 +45,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+
+    // public static function generateUserName($username)
+    // {
+    //     if($username == null) {
+    //         $username = Str::lower(Str::random(8));
+    //     }
+    //     if(User::where('username', $username)->exist()) {
+    //         $newUsername = $username.Str::lower(Str::random(3));
+    //         $username = static::generateUserName($newUsername);
+    //     }
+
+    //     return $username;
+    // }
 }

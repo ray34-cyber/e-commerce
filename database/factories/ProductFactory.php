@@ -26,8 +26,8 @@ class ProductFactory extends Factory
         return [
             'nama_produk' => $nama_produk,
             'slug' => $this->faker->slug(),
-            'price' => $this->faker->randomNumber(3,false),
-            'body' => $this->faker->sentence(rand(5, 8)),
+            'price' => $this->faker->randomNumber(5),
+            'body' => $this->faker->paragraph(mt_rand(5, 8)),
             'category_id' => $category_id,
             'user_id' => mt_rand(1,3),
         ];

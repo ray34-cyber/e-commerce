@@ -32,7 +32,7 @@ export default {
                 },
             },
             animation: {
-                fadeOut: "fadeOut 3s ease-in",
+                fadeOut: "fadeOut 5s ease-in",
                 animateArrowLeft: "animateArrowLeft 1s infinite",
             },
         },

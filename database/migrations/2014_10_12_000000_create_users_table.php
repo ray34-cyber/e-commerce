@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('avatar',255)->nullable();
+            $table->string('provider_id',255)->nullable();
+            $table->string('provider_token',255)->nullable();    
+            $table->string('provider')->nullable();
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }

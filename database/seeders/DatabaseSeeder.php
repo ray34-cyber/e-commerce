@@ -16,31 +16,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'full_name' => 'rancha adzany',
-            'username' => 'ray34-cyber',
-            'email' => 'rancha.adzany1@gmail.com',
-            'password' => 'reykece0905'
-        ]);
+        // User::create([
+        //     'full_name' => 'rancha adzany',
+        //     'username' => 'ray34-cyber',
+        //     'email' => 'rancha.adzany1@gmail.com',
+        //     'password' => 'reykece0905'
+        // ]);
 
         User::factory(3)->create();
 
         Category::create([
             'name_category' => 'Clothes',
-            'slug' => 'clothes'
+            'category_slug' => 'clothes'
         ]);
 
         Category::create([
             'name_category' => 'Shoes',
-            'slug' => 'shoes'
+            'category_slug' => 'shoes'
         ]);
 
         Category::create([
             'name_category' => 'Pants',
-            'slug' => 'pants'
+            'category_slug' => 'pants'
         ]);
 
-        Product::factory(20)->create();
+        Product::factory(30)->create();
 
     }
 

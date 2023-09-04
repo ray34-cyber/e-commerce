@@ -2,7 +2,7 @@ import Card from "@/Components/Card";
 import Navbar from "@/Components/Navbar";
 import Paginator from "@/Components/Paginator";
 import { Head, Link } from "@inertiajs/react";
-import React from "react";
+import React, { useEffect } from "react";
 import Typewriter from "typewriter-effect";
 
 const Index = (props) => {

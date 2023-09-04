@@ -3,15 +3,16 @@ import React, { useState } from "react";
 
 const Card = ({
     product: {
+        id,
         nama_produk,
         price,
         body,
-        category: { name_category, slug },
+        category: { name_category, category_slug },
         image,
+        slug,
     },
 }) => {
     const [isHovered, setIsHovered] = useState(false);
-
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
@@ -44,16 +45,26 @@ const Card = ({
             </figure>
             <div className="card-body">
                 <h2 className="card-title">{nama_produk}!</h2>
-                <p>{body}</p>
-                <p>{price} $</p>
+                <p>
+                    {body.length >= 50
+                        ? body.replace(body.substring(50, body.length), " ...")
+                        : body}
+                </p>
+                <p>Rp. {price}</p>
                 <div className="card-actions justify-end">
                     <Link
-                        className="badge badge-outline"
-                        href={`/?category=${slug}`}
+                        href={`/order/${slug}`}
+                        className="btn btn-outline btn-secondary"
                     >
-                        {name_category}
+                        Buy Now
                     </Link>
                 </div>
+                <Link
+                    className="badge badge-outline inline"
+                    href={`/?category=${category_slug}`}
+                >
+                    {name_category}
+                </Link>
             </div>
         </div>
     );

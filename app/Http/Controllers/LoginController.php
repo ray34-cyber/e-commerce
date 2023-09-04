@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -17,9 +18,13 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
        $credentials = $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
+
+        if (User::where('email', $credentials['email'])->whereNotNull('provider')->exists()) {
+            return redirect('/login')->withErrors(['emailOAuth' => 'Email ini sudah digunakan untuk login dengan metode yang lain! Silahkan coba login kembali dengan metode yang berbeda!']);
+        }
 
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
